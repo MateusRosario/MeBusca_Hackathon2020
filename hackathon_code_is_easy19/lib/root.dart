@@ -1,7 +1,16 @@
+import 'package:MeBusca/requests/markets.dart';
+import 'package:MeBusca/requests/products.dart';
+import 'package:MeBusca/requests/user.dart';
 import 'package:flutter/material.dart';
 
 class AppRoot extends InheritedWidget {
   AppRoot({Widget child, Key key}) : super(key: key, child: child);
+
+  final userRequests = UserRequests();
+
+  final marketsRequests = MarketsRequests();
+
+  final productsRequests = ProductsRequests();
 
   final constants = Constants();
 

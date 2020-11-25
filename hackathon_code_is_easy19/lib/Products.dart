@@ -196,7 +196,7 @@ class _ProductsPageState extends State<ProductsPage> {
       )),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.shopping_bag,
+          Icons.shop,
         ),
         backgroundColor: Colors.pink,
         onPressed: () {
