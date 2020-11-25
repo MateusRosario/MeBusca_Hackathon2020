@@ -1,3 +1,5 @@
+import 'package:MeBusca/requests/markets.dart';
+import 'package:MeBusca/root.dart';
 import 'package:flutter/material.dart';
 import 'package:MeBusca/Products.dart';
 
@@ -12,71 +14,70 @@ class MarketsPage extends StatefulWidget {
 
 class _MarketsPageState extends State<MarketsPage> {
   String valorPadraoOrdenar = 'Ordenar', valorPadraoFiltrar = 'Filtrar';
-  List<String> nomesComercio = <String>[
-    'Quarteto',
-    'Mercado da dona Joana',
-    'Esquina da Quintanda',
-    'Mercadinho Tem Tudo',
-    'Mercado do seu Joaquim',
-    'Extra',
-    'Mercado Mateus',
-    'Big',
-    'Mercadinho da Mara',
-    'Atacadão',
-    'Alvorada',
-  ];
 
-  Widget teste(BuildContext context, int index) {
-    return FlatButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProductsPage()),
-          );
-        },
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.deepOrangeAccent,
-                borderRadius: BorderRadius.circular(10)),
-            width: MediaQuery.of(context).size.width,
-            height: 120,
-            child: Row(
-              children: [
-                Container(
-                    child: Image.network(
-                        "https://picsum.photos/250?image=" + index.toString())),
-                Container(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      child: Text(nomesComercio[index],
-                          overflow: TextOverflow.clip,
-                          softWrap: true,
-                          style: TextStyle(color: Colors.white, fontSize: 20)),
-                    ),
-                    Text(
-                      "Funcionamento:",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Endereço:",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                )
-              ],
-            ),
+  Widget listTile(BuildContext context, String nome, String imageURL) {
+    print(imageURL);
+    return GestureDetector(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+        child: Container(
+          decoration: BoxDecoration(
+              color: AppRoot.getColor(context, 'second'),
+              borderRadius: BorderRadius.circular(20)),
+          height: 120,
+          child: Row(
+            children: [
+              ClipRRect(
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  child: Image.network(
+                    imageURL,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              Container(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(nome,
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                  ),
+                  Text(
+                    "Funcionamento:",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "Endereço:",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )
+                ],
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProductsPage()),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Market> markets = AppRoot.of(context).marketsRequests.get();
+    Iterable<Widget> marketsList = markets
+        .map((market) => listTile(context, market.name, market.imageURL));
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -94,7 +95,7 @@ class _MarketsPageState extends State<MarketsPage> {
                         child: IconButton(
                           icon: Icon(
                             Icons.arrow_back_ios,
-                            size: 70,
+                            size: 45,
                             color: Colors.deepOrange,
                           ),
                           onPressed: () {
@@ -173,49 +174,16 @@ class _MarketsPageState extends State<MarketsPage> {
                         ),
                       ),
 
-                      ListView.separated(
-                        itemCount: 10,
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Container(height: 0),
-                        itemBuilder: (BuildContext context, int index) {
-                          return teste(context, index);
-                        },
-                      ),
+                      Column(
+                        children: marketsList.toList(),
+                      )
                     ],
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: FlatButton(
-                    child: Text('Produtos'),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ProductsPage();
-                      }));
-                    },
                   ),
                 ),
               ],
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: Container(
-        height: 40.0,
-        child: Row(
-          children: <Widget>[
-            Container(
-              height: 50,
-            )
-          ],
-        ),
-        decoration: BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
       ),
     );
   }

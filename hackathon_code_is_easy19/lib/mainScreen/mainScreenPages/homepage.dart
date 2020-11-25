@@ -1,8 +1,11 @@
+import 'package:MeBusca/requests/markets.dart';
 import 'package:MeBusca/root.dart';
 import 'package:MeBusca/tool/carouselmarker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:MeBusca/Markets.dart';
+
+import '../../Products.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,12 +17,12 @@ class HomePageState extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> markets = [
-      MarketTile(),
-      MarketTile(),
-      MarketTile(),
-      MarketTile(),
-    ];
+    List<Market> markets = AppRoot.of(context).marketsRequests.get();
+
+    Iterable<Widget> marketsList;
+
+    marketsList = markets.map(
+        (market) => MarketTile(name: market.name, distance: market.distance));
 
     return Scaffold(
       body: SafeArea(
@@ -130,7 +133,7 @@ class HomePageState extends State<StatefulWidget> {
               height: 150,
               child: PageView(
                 scrollDirection: Axis.horizontal,
-                children: markets,
+                children: marketsList.toList(),
                 onPageChanged: (int page) {
                   carouselPage = page;
                   setState(() {});
@@ -158,36 +161,43 @@ class MarketTile extends StatelessWidget {
   final String name;
   final int distance;
 
-  MarketTile({this.name = 'Placeholder', this.distance = 0});
+  MarketTile({this.name, this.distance});
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width - 20,
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ProductsPage();
+          }));
+        },
         child: Container(
-          margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  name,
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Expanded(
-                child: Container(),
-              ),
-              Container(
+          width: MediaQuery.of(context).size.width - 20,
+          child: Container(
+            margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
+            child: Column(
+              children: <Widget>[
+                Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(distance.toString() + ' metros')),
-            ],
+                  child: Text(
+                    name,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(distance.toString() + ' metros')),
+              ],
+            ),
           ),
-        ),
-        decoration: BoxDecoration(
-          color: AppRoot.getColor(context, 'second'),
-          borderRadius: BorderRadius.circular(10),
+          decoration: BoxDecoration(
+            color: AppRoot.getColor(context, 'second'),
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );
