@@ -34,6 +34,24 @@ class _MarketsPageState extends State<MarketsPage> {
                   child: Image.network(
                     imageURL,
                     fit: BoxFit.fitHeight,
+                    loadingBuilder:
+                        (BuildContext context, Widget widget, loadingProgress) {
+                      Color color = AppRoot.getColor(context, 'iconColor');
+                      if (loadingProgress == null) {
+                        return widget;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes
+                                : null,
+                            valueColor:
+                                new AlwaysStoppedAnimation<Color>(color),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
