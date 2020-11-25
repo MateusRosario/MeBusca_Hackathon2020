@@ -22,9 +22,7 @@ class HomePageConsumerState extends State<StatefulWidget> {
     Iterable<Widget> marketsList;
 
     marketsList = markets.map((market) => MarketTile(
-          name: market.name,
-          distance: market.distance,
-          imageURL: market.imageURL,
+          market: market,
         ));
 
     return Scaffold(
@@ -161,11 +159,9 @@ class HomePageConsumerState extends State<StatefulWidget> {
 }
 
 class MarketTile extends StatelessWidget {
-  final String name;
-  final int distance;
-  final String imageURL;
+  final Market market;
 
-  MarketTile({this.name, this.distance, this.imageURL});
+  MarketTile({this.market});
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +169,9 @@ class MarketTile extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ProductsPage();
+            return ProductsPage(
+              market: this.market,
+            );
           }));
         },
         child: Container(
@@ -187,7 +185,7 @@ class MarketTile extends StatelessWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        name,
+                        this.market.name,
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -196,7 +194,8 @@ class MarketTile extends StatelessWidget {
                     ),
                     Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(distance.toString() + ' metros')),
+                        child:
+                            Text(this.market.distance.toString() + ' metros')),
                   ],
                 ),
               ),
@@ -213,7 +212,7 @@ class MarketTile extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(),
                     child: Image.network(
-                      imageURL,
+                      this.market.imageURL,
                       fit: BoxFit.fitHeight,
                       loadingBuilder: (BuildContext context, Widget widget,
                           loadingProgress) {

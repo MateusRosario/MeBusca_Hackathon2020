@@ -15,8 +15,7 @@ class MarketsPage extends StatefulWidget {
 class _MarketsPageState extends State<MarketsPage> {
   String valorPadraoOrdenar = 'Ordenar', valorPadraoFiltrar = 'Filtrar';
 
-  Widget listTile(BuildContext context, String nome, String imageURL) {
-    print(imageURL);
+  Widget listTile(BuildContext context, Market market) {
     return GestureDetector(
       child: Padding(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -32,7 +31,7 @@ class _MarketsPageState extends State<MarketsPage> {
                   width: 120,
                   height: 120,
                   child: Image.network(
-                    imageURL,
+                    market.imageURL,
                     fit: BoxFit.fitHeight,
                     loadingBuilder:
                         (BuildContext context, Widget widget, loadingProgress) {
@@ -63,11 +62,11 @@ class _MarketsPageState extends State<MarketsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    child: Text(nome,
+                    child: Text(market.name,
                         style: TextStyle(color: Colors.white, fontSize: 20)),
                   ),
                   Text(
-                    "Funcionamento:",
+                    "Funcionamento: ",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
@@ -85,7 +84,10 @@ class _MarketsPageState extends State<MarketsPage> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductsPage()),
+          MaterialPageRoute(
+              builder: (context) => ProductsPage(
+                    market: market,
+                  )),
         );
       },
     );
@@ -94,8 +96,8 @@ class _MarketsPageState extends State<MarketsPage> {
   @override
   Widget build(BuildContext context) {
     List<Market> markets = AppRoot.of(context).marketsRequests.get();
-    Iterable<Widget> marketsList = markets
-        .map((market) => listTile(context, market.name, market.imageURL));
+    Iterable<Widget> marketsList =
+        markets.map((market) => listTile(context, market));
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -107,20 +109,6 @@ class _MarketsPageState extends State<MarketsPage> {
                   child: Column(
                     children: <Widget>[
                       //botão de retornar
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        width: MediaQuery.of(context).size.width,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios,
-                            size: 45,
-                            color: Colors.deepOrange,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
                       SizedBox(
                         height: 30,
                       ),
@@ -131,7 +119,8 @@ class _MarketsPageState extends State<MarketsPage> {
                           padding: EdgeInsets.only(left: 10),
                           child: Container(
                             child: Text("Mercados",
-                                style: TextStyle(fontSize: 30)),
+                                style: TextStyle(
+                                    fontSize: 40, fontWeight: FontWeight.bold)),
                           ),
                         ),
                       ),
@@ -144,7 +133,8 @@ class _MarketsPageState extends State<MarketsPage> {
                             child: Text(
                                 "Nesta tela estão listados todos os mercados.",
                                 style: TextStyle(
-                                    fontSize: 19, color: Colors.grey)),
+                                  fontSize: 19,
+                                )),
                           ),
                         ),
                       ),

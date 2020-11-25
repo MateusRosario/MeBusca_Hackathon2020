@@ -1,7 +1,11 @@
 import 'dart:core';
 
+import 'package:MeBusca/requests/cart.dart';
+import 'package:MeBusca/requests/order.dart';
+import 'package:MeBusca/requests/products.dart';
 import 'package:MeBusca/root.dart';
 import 'package:flutter/material.dart';
+import 'package:MeBusca/requests/markets.dart';
 
 class KartPage extends StatefulWidget {
   KartPage({
@@ -13,12 +17,16 @@ class KartPage extends StatefulWidget {
 }
 
 class _KartPageState extends State<KartPage> {
+  Cart cart;
+
   List<String> nomeFrutas = <String>['Abacaxi', 'Abacate', 'Bolacha'];
   List<String> tipoProduto = <String>['Fruta', 'Fruta', 'Biscoito'];
   List<String> quantidades = <String>['3', '4', '2'];
 
   @override
   Widget build(BuildContext context) {
+    cart = AppRoot.of(context).userRequests.user.cart;
+
     return Scaffold(
         body: SafeArea(
       child: Stack(
@@ -50,7 +58,7 @@ class _KartPageState extends State<KartPage> {
                 shrinkWrap: true,
                 physics: ClampingScrollPhysics(),
                 padding: const EdgeInsets.all(8),
-                itemCount: nomeFrutas.length,
+                itemCount: cart.bags.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                       height: 100,
@@ -69,7 +77,7 @@ class _KartPageState extends State<KartPage> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        nomeFrutas[index],
+                                        cart.bags[index].product.item,
                                         style: TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold),
@@ -78,13 +86,15 @@ class _KartPageState extends State<KartPage> {
                                     ),
                                     Expanded(
                                         child: Text(
-                                      'Tipo: ' + tipoProduto[index],
+                                      'Tipo: ' +
+                                          cart.bags[index].product.category,
                                       style: TextStyle(fontSize: 18),
                                       textAlign: TextAlign.left,
                                     )),
                                     Expanded(
                                         child: Text(
-                                      'Quantidade: ' + quantidades[index],
+                                      'Quantidade: ' +
+                                          cart.bags[index].qty.toString(),
                                       style: TextStyle(fontSize: 17),
                                       textAlign: TextAlign.left,
                                     ))
@@ -135,6 +145,9 @@ class _KartPageState extends State<KartPage> {
                           context: context,
                           helpText: 'Selecione o horário de busca',
                           cancelText: 'CANCELAR');
+                      selectedTime.then((value) => {
+                            markets[0].orders.add(Order('Mateus', value, cart))
+                          });
                     },
                   ))
                 ],
@@ -148,11 +161,9 @@ class _KartPageState extends State<KartPage> {
 }
 
 class KartTile extends StatelessWidget {
-  final String nomeProduto;
-  final String tipoProduto;
-  final int quantidade;
+  final Bag bag;
 
-  KartTile({this.nomeProduto, this.tipoProduto, this.quantidade});
+  KartTile({this.bag});
 
   @override
   Widget build(BuildContext context) {
@@ -181,15 +192,15 @@ class KartTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Produto: ' + this.nomeProduto,
+                      'Produto: ' + this.bag.product.item,
                       textAlign: TextAlign.left,
                     ),
                     Text(
-                      'Tipo: ' + this.tipoProduto,
+                      'Tipo: ' + this.bag.product.category,
                       textAlign: TextAlign.left,
                     ),
                     Text(
-                      'Quantidade: ' + this.quantidade.toString(),
+                      'Quantidade: ' + this.bag.qty.toString(),
                       textAlign: TextAlign.left,
                     ),
                   ],

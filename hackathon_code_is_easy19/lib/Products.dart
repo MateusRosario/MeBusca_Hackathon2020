@@ -1,3 +1,5 @@
+import 'package:MeBusca/requests/cart.dart';
+import 'package:MeBusca/requests/markets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:MeBusca/requests/products.dart';
 import 'package:MeBusca/root.dart';
@@ -5,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:MeBusca/kart.dart';
 
 class ProductsPage extends StatefulWidget {
-  ProductsPage({
-    Key key,
-  }) : super(key: key);
+  final Market market;
+
+  ProductsPage({Key key, this.market}) : super(key: key);
 
   @override
   _ProductsPageState createState() => _ProductsPageState();
@@ -17,8 +19,10 @@ class _ProductsPageState extends State<ProductsPage> {
   //Nome para ser exibido na caixa de seleção quando nenhum item esta selecionado
   String valorPadraoOrdenar = 'Ordenar', valorPadraoFiltrar = 'Filtrar';
 
-  Widget listTile(
-      BuildContext context, String nome, String imagemURL, String categoria) {
+  bool setted = false;
+  Cart cart = Cart([]);
+
+  Widget listTile(BuildContext context, Product product) {
     return Container(
         height: 100,
         child: Card(
@@ -32,7 +36,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       width: 120,
                       height: 120,
                       child: Image.network(
-                        imagemURL,
+                        product.imageURL,
                         fit: BoxFit.fitHeight,
                         loadingBuilder: (BuildContext context, Widget widget,
                             loadingProgress) {
@@ -66,16 +70,16 @@ class _ProductsPageState extends State<ProductsPage> {
                     children: [
                       Expanded(
                         child: Text(
-                          nome,
+                          product.item,
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
                         ),
                       ),
                       Expanded(
                           child: Text(
-                        'Tipo: ' + categoria,
-                        style: TextStyle(fontSize: 18),
+                        'Tipo: ' + product.category,
+                        style: TextStyle(fontSize: 15),
                         textAlign: TextAlign.left,
                       ))
                     ],
@@ -90,8 +94,45 @@ class _ProductsPageState extends State<ProductsPage> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
+                              TextEditingController textController =
+                                  TextEditingController();
                               return AlertDialog(
                                 title: Text('Quantidade'),
+                                content: TextField(
+                                  controller: textController,
+                                ),
+                                actions: [
+                                  FlatButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Cancelar'),
+                                    color: Colors.black26,
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      print(textController.text);
+                                      setState(() {
+                                        cart.bags.add(Bag(product,
+                                            int.parse(textController.text)));
+                                        if (!setted) {
+                                          AppRoot.of(context)
+                                              .userRequests
+                                              .user
+                                              .cart = this.cart;
+                                        }
+                                        Navigator.pop(context);
+                                      });
+                                    },
+                                    child: Text(
+                                      'Confirmar',
+                                      style: TextStyle(
+                                          color: AppRoot.getColor(
+                                              context, 'iconColor')),
+                                    ),
+                                    color: Color.fromARGB(255, 87, 204, 153),
+                                  )
+                                ],
                               );
                             });
                       },
@@ -107,9 +148,9 @@ class _ProductsPageState extends State<ProductsPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Product> products = AppRoot.of(context).productsRequests.get();
-    Iterable<Widget> productList = products.map((product) =>
-        listTile(context, product.item, product.imageURL, product.category));
+    List<Product> products = this.widget.market.store;
+    Iterable<Widget> productList =
+        products.map((product) => listTile(context, product));
     return Scaffold(
       body: SafeArea(
           child: Stack(

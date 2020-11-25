@@ -21,6 +21,16 @@ List<Product> products = [
       'https://marketup-cdn.s3-us-west-2.amazonaws.com/files/331946/products/5a32cf7f-8ec5-4dad-ae88-6b516d41ee39.jpeg'),
   Product('001', 'Colgate', category[5],
       'https://img.onofre.com.br/catalog/product/c/o/colgate_50g_2_.jpg?width=450&height=450&quality=85&type=resize'),
+  Product('007', 'Arroz', category[6],
+      'https://assets.instabuy.com.br/ib.item.image.big/b-916a4c834b6a4fd9bf0b4411090af857.jpeg'),
+  Product('008', 'Leite', category[3],
+      'https://carrefourbr.vtexassets.com/arquivos/ids/211134-800-auto?width=800&height=auto&aspect=true'),
+  Product('009', 'Desosorante', category[5],
+      'https://carrefourbr.vtexassets.com/arquivos/ids/198156-800-auto?width=800&height=auto&aspect=true'),
+  Product('010', 'Toddy', category[6],
+      'https://carrefourbr.vtexassets.com/arquivos/ids/195995-800-auto?width=800&height=auto&aspect=true'),
+  Product('011', 'Feijão', category[6],
+      'https://carrefourbr.vtexassets.com/arquivos/ids/194917-800-auto?width=800&height=auto&aspect=true'),
 ];
 
 class ProductsRequests {
