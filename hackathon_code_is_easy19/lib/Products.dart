@@ -22,16 +22,47 @@ class _ProductsPageState extends State<ProductsPage> {
     return Container(
         height: 100,
         child: Card(
-          color: Color.fromARGB(255, 255, 182, 193),
+          color: AppRoot.getColor(context, 'third'),
           child: Row(
             children: [
               Container(
                 padding: EdgeInsets.all(5),
-                child: Image.network(imagemURL),
+                child: ClipRRect(
+                  child: Container(
+                      width: 120,
+                      height: 120,
+                      child: Image.network(
+                        imagemURL,
+                        fit: BoxFit.fitHeight,
+                        loadingBuilder: (BuildContext context, Widget widget,
+                            loadingProgress) {
+                          Color color = AppRoot.getColor(context, 'iconColor');
+                          if (loadingProgress == null) {
+                            return widget;
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes
+                                    : null,
+                                valueColor:
+                                    new AlwaysStoppedAnimation<Color>(color),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10))),
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
               Container(
                   padding: EdgeInsets.all(5),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Text(
@@ -49,6 +80,9 @@ class _ProductsPageState extends State<ProductsPage> {
                       ))
                     ],
                   )),
+              Expanded(
+                child: Container(),
+              ),
               Container(
                   alignment: Alignment.centerRight,
                   child: FlatButton(
@@ -110,14 +144,15 @@ class _ProductsPageState extends State<ProductsPage> {
                       value: valorPadraoOrdenar,
                       icon: Icon(
                         Icons.arrow_downward,
-                        color: Colors.pink,
+                        color: AppRoot.getColor(context, 'fifth'),
                       ),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.pink),
+                      style:
+                          TextStyle(color: AppRoot.getColor(context, 'fifth')),
                       underline: Container(
                         height: 2,
-                        color: Colors.pink,
+                        color: AppRoot.getColor(context, 'fifth'),
                       ),
                       onChanged: (String newValue) {
                         setState(() {
@@ -137,14 +172,15 @@ class _ProductsPageState extends State<ProductsPage> {
                       value: valorPadraoFiltrar,
                       icon: Icon(
                         Icons.arrow_downward,
-                        color: Colors.pink,
+                        color: AppRoot.getColor(context, 'fifth'),
                       ),
                       iconSize: 24,
                       elevation: 16,
-                      style: TextStyle(color: Colors.pink),
+                      style:
+                          TextStyle(color: AppRoot.getColor(context, 'fifth')),
                       underline: Container(
                         height: 2,
-                        color: Colors.pink,
+                        color: AppRoot.getColor(context, 'fifth'),
                       ),
                       onChanged: (String newValue) {
                         setState(() {
@@ -166,7 +202,8 @@ class _ProductsPageState extends State<ProductsPage> {
               //Lista com os produtos a serem exibidos
               Column(
                 children: productList.toList(),
-              )
+              ),
+              Container(height: 50)
             ],
           )
         ],
@@ -175,7 +212,7 @@ class _ProductsPageState extends State<ProductsPage> {
         child: Icon(
           Icons.shop,
         ),
-        backgroundColor: Colors.pink,
+        backgroundColor: AppRoot.getColor(context, 'fifth'),
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return KartPage();

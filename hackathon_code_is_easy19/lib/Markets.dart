@@ -34,6 +34,24 @@ class _MarketsPageState extends State<MarketsPage> {
                   child: Image.network(
                     imageURL,
                     fit: BoxFit.fitHeight,
+                    loadingBuilder:
+                        (BuildContext context, Widget widget, loadingProgress) {
+                      Color color = AppRoot.getColor(context, 'iconColor');
+                      if (loadingProgress == null) {
+                        return widget;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes
+                                : null,
+                            valueColor:
+                                new AlwaysStoppedAnimation<Color>(color),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
@@ -137,39 +155,36 @@ class _MarketsPageState extends State<MarketsPage> {
                         child: Row(
                           children: [
                             //Botões para controlar a ordem e filtragem dos produtos
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: DropdownButton<String>(
-                                icon: Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.deepOrange,
-                                ),
-                                value: valorPadraoOrdenar,
-                                iconSize: 24,
-                                elevation: 16,
-                                style: TextStyle(color: Colors.deepOrange),
-                                underline: Container(
-                                  height: 2,
-                                  color: Colors.deepOrange,
-                                ),
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    valorPadraoOrdenar = newValue;
-                                  });
-                                },
-                                items: <String>[
-                                  'Ordenar',
-                                  'Nome A-Z',
-                                  'Nome Z-A',
-                                  'Mais próximos'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
+                            DropdownButton<String>(
+                              icon: Icon(
+                                Icons.arrow_downward,
+                                color: Colors.deepOrange,
                               ),
-                            )
+                              value: valorPadraoOrdenar,
+                              iconSize: 24,
+                              elevation: 16,
+                              style: TextStyle(color: Colors.deepOrange),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.deepOrange,
+                              ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  valorPadraoOrdenar = newValue;
+                                });
+                              },
+                              items: <String>[
+                                'Ordenar',
+                                'Nome A-Z',
+                                'Nome Z-A',
+                                'Mais próximos'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
                           ],
                         ),
                       ),

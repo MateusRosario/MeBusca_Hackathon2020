@@ -38,8 +38,8 @@ List<Market> markets = [
   ),
   Market(
     '001',
-    'Mateus', 1200,
-    'https://s2.glbimg.com/PuYLyGRTeaqCPRpuX2PFUR8q3MQ=/0x0:530x281/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_63b422c2caee4269b8b34177e8876b93/internal_photos/bs/2020/n/j/xLKRx1S8ukaxTWFDJL1A/grupomateus.jpg',
+    'Mercearia Portela', 1200,
+    'https://www.cidadesaqui.com.br/media/com_jbusinessdirectory/pictures/companies/74/20180918124402-1538725595.jpg',
 
     //Store
     [],
