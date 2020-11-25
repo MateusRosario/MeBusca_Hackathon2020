@@ -11,6 +11,7 @@ class MarketsPage extends StatefulWidget {
 }
 
 class _MarketsPageState extends State<MarketsPage> {
+  String valorPadraoOrdenar = 'Ordenar', valorPadraoFiltrar = 'Filtrar';
   List<String> nomesComercio = <String>[
     'Quarteto',
     'Mercado da dona Joana',
@@ -26,44 +27,52 @@ class _MarketsPageState extends State<MarketsPage> {
   ];
 
   Widget teste(BuildContext context, int index) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.orange, borderRadius: BorderRadius.circular(10)),
-        width: MediaQuery.of(context).size.width,
-        height: 120,
-        child: Row(
-          children: [
-            Container(
-                child: Image.network(
-                    "https://picsum.photos/250?image=" + index.toString())),
-            Container(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return FlatButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProductsPage()),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.deepOrangeAccent,
+                borderRadius: BorderRadius.circular(10)),
+            width: MediaQuery.of(context).size.width,
+            height: 120,
+            child: Row(
               children: [
-                Flexible(
-                  child: Text(nomesComercio[index],
-                      overflow: TextOverflow.clip,
-                      softWrap: true,
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                ),
-                Text(
-                  "Funcionamento:",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  "Endereço:",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                Container(
+                    child: Image.network(
+                        "https://picsum.photos/250?image=" + index.toString())),
+                Container(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: Text(nomesComercio[index],
+                          overflow: TextOverflow.clip,
+                          softWrap: true,
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ),
+                    Text(
+                      "Funcionamento:",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Endereço:",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
-      ),
-    );
+            ),
+          ),
+        ));
   }
 
   @override
@@ -78,7 +87,7 @@ class _MarketsPageState extends State<MarketsPage> {
                   alignment: Alignment.topLeft,
                   child: Column(
                     children: <Widget>[
-                      //botão de voltar
+                      //botão de retornar
                       Container(
                         alignment: Alignment.centerLeft,
                         width: MediaQuery.of(context).size.width,
@@ -122,18 +131,48 @@ class _MarketsPageState extends State<MarketsPage> {
                       ),
                       //botão ordenar
                       Container(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: FlatButton(
-                              color: Colors.deepOrange,
-                              onPressed: () {},
-                              child: Text(
-                                "Ordenar",
-                                style: TextStyle(color: Colors.white),
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.fromLTRB(20, 0, 0, 20),
+                        child: Row(
+                          children: [
+                            //Botões para controlar a ordem e filtragem dos produtos
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: DropdownButton<String>(
+                                icon: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.deepOrange,
+                                ),
+                                value: valorPadraoOrdenar,
+                                iconSize: 24,
+                                elevation: 16,
+                                style: TextStyle(color: Colors.deepOrange),
+                                underline: Container(
+                                  height: 2,
+                                  color: Colors.deepOrange,
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    valorPadraoOrdenar = newValue;
+                                  });
+                                },
+                                items: <String>[
+                                  'Ordenar',
+                                  'Nome A-Z',
+                                  'Nome Z-A',
+                                  'Mais próximos'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
-                            )),
+                            )
+                          ],
+                        ),
                       ),
+
                       ListView.separated(
                         itemCount: 10,
                         shrinkWrap: true,
