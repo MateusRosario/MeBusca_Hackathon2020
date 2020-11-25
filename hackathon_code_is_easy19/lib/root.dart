@@ -19,8 +19,12 @@ class AppRoot extends InheritedWidget {
 class Constants {
   Map colors = {
     "production": {
-      "first": Color.fromARGB(255, 100, 100, 1000),
-      "second": Color.fromARGB(255, 100, 100, 1000),
+      "first": Color.fromARGB(255, 247, 178, 103),
+      "second": Color.fromARGB(255, 247, 157, 101),
+      "third": Color.fromARGB(255, 244, 132, 95),
+      "fourth": Color.fromARGB(255, 242, 112, 89),
+      "fifth": Color.fromARGB(255, 242, 92, 84),
+      "iconColor": Color.fromARGB(255, 255, 255, 255)
     }
   };
 
