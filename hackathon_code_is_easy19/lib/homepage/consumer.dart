@@ -17,6 +17,7 @@ class _ConsumerHomePageState extends State<ConsumerHomePage> {
         title: Text(widget.title),
       ),
       bottomNavigationBar: Container(
+        height: 40.0,
         child: Row(
           children: <Widget>[],
         ),
