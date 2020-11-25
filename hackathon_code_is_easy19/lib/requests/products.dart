@@ -4,7 +4,8 @@ List<String> category = [
   'Biscoitos',
   'Bebidas',
   'Limpeza',
-  'Higiene'
+  'Higiene',
+  'Alimentos'
 ];
 
 //Lista de Produtos No Sistema
