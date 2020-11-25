@@ -21,6 +21,10 @@ class AppRoot extends InheritedWidget {
   static Color getColor(BuildContext context, String colorCode) =>
       AppRoot.of(context).constants.getColor(colorCode);
 
+  // Return True if User is Owner
+  static bool isUserOwner(BuildContext context) =>
+      AppRoot.of(context).userRequests.getUser().isOwner;
+
   @override
   bool updateShouldNotify(AppRoot oldWidget) => oldWidget != this;
 }

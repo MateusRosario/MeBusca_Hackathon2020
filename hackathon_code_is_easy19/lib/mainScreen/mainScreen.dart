@@ -1,7 +1,10 @@
+import 'package:MeBusca/mainScreen/mainScreenPages/homepageOwner.dart';
 import 'package:MeBusca/root.dart';
 import 'package:flutter/material.dart';
 import 'package:MeBusca/kart.dart';
-import 'package:MeBusca/mainScreen/mainScreenPages/homepage.dart';
+import 'package:MeBusca/mainScreen/mainScreenPages/homepageConsumer.dart';
+
+import 'mainScreenPages/profilePage.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key key}) : super(key: key);
@@ -18,16 +21,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     pageController = PageController(initialPage: 0);
-    pageView = PageView(
-      physics: new NeverScrollableScrollPhysics(),
-      controller: pageController,
-      children: <Widget>[
-        HomePage(),
-        KartPage(),
-        Placeholder(),
-        Placeholder(),
-      ],
-    );
 
     pageController.addListener(() {
       setState(() {
@@ -38,8 +31,23 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+  void setOwner(bool isOwner) {
+    setState(() {
+      AppRoot.of(context).userRequests.getUser().isOwner = isOwner;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    pageView = PageView(
+      physics: new NeverScrollableScrollPhysics(),
+      controller: pageController,
+      children: <Widget>[
+        AppRoot.isUserOwner(context) ? HomePageOwner() : HomePageConsumer(),
+        AppRoot.isUserOwner(context) ? Placeholder() : KartPage(),
+        ProfilePage(setOwner: this.setOwner),
+      ],
+    );
     return Scaffold(
       body: pageView,
       bottomNavigationBar: Container(
@@ -68,7 +76,10 @@ class _MainScreenState extends State<MainScreen> {
             ),
             Container(
               child: IconButton(
-                icon: Icon(Icons.shopping_cart,
+                icon: Icon(
+                    AppRoot.isUserOwner(context)
+                        ? Icons.shopping_basket
+                        : Icons.shopping_cart,
                     size: 30,
                     color: page != 1
                         ? AppRoot.getColor(context, 'iconColor')
@@ -85,26 +96,9 @@ class _MainScreenState extends State<MainScreen> {
             ),
             Container(
               child: IconButton(
-                icon: Icon(Icons.shop,
-                    size: 30,
-                    color: page != 2
-                        ? AppRoot.getColor(context, 'iconColor')
-                        : AppRoot.getColor(context, 'first')),
-                onPressed: () {
-                  pageController.animateToPage(2,
-                      duration: Duration(milliseconds: 400),
-                      curve: Curves.ease);
-                },
-              ),
-            ),
-            Expanded(
-              child: Container(),
-            ),
-            Container(
-              child: IconButton(
                 icon: Icon(Icons.account_circle,
                     size: 30,
-                    color: page != 3
+                    color: page != 2
                         ? AppRoot.getColor(context, 'iconColor')
                         : AppRoot.getColor(context, 'first')),
                 onPressed: () {

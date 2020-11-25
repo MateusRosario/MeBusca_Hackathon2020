@@ -7,12 +7,12 @@ import 'package:MeBusca/Markets.dart';
 
 import '../../Products.dart';
 
-class HomePage extends StatefulWidget {
+class HomePageConsumer extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => HomePageState();
+  State<StatefulWidget> createState() => HomePageConsumerState();
 }
 
-class HomePageState extends State<StatefulWidget> {
+class HomePageConsumerState extends State<StatefulWidget> {
   int carouselPage = 0;
 
   @override
@@ -21,8 +21,11 @@ class HomePageState extends State<StatefulWidget> {
 
     Iterable<Widget> marketsList;
 
-    marketsList = markets.map(
-        (market) => MarketTile(name: market.name, distance: market.distance));
+    marketsList = markets.map((market) => MarketTile(
+          name: market.name,
+          distance: market.distance,
+          imageURL: market.imageURL,
+        ));
 
     return Scaffold(
       body: SafeArea(
@@ -160,8 +163,9 @@ class HomePageState extends State<StatefulWidget> {
 class MarketTile extends StatelessWidget {
   final String name;
   final int distance;
+  final String imageURL;
 
-  MarketTile({this.name, this.distance});
+  MarketTile({this.name, this.distance, this.imageURL});
 
   @override
   Widget build(BuildContext context) {
@@ -174,25 +178,66 @@ class MarketTile extends StatelessWidget {
         },
         child: Container(
           width: MediaQuery.of(context).size.width - 20,
-          child: Container(
-            margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    name,
-                    textAlign: TextAlign.left,
+          child: Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        name,
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(distance.toString() + ' metros')),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Container(
+                height: 150,
+                width: 150,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(),
+                    child: Image.network(
+                      imageURL,
+                      fit: BoxFit.fitHeight,
+                      loadingBuilder: (BuildContext context, Widget widget,
+                          loadingProgress) {
+                        Color color = AppRoot.getColor(context, 'iconColor');
+                        if (loadingProgress == null) {
+                          return widget;
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes
+                                  : null,
+                              valueColor:
+                                  new AlwaysStoppedAnimation<Color>(color),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: Container(),
-                ),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(distance.toString() + ' metros')),
-              ],
-            ),
+              )
+            ],
           ),
           decoration: BoxDecoration(
             color: AppRoot.getColor(context, 'second'),

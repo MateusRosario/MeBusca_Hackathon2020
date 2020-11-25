@@ -21,12 +21,12 @@ class UserRequests {
       ]),
 
       //IsOwner
-      true,
+      false,
 
       //MyMarket
       markets[0]);
 
-  getUser() {
+  User getUser() {
     return user;
   }
 }

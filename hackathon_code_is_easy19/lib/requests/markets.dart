@@ -1,4 +1,6 @@
+import 'package:MeBusca/requests/cart.dart';
 import 'package:MeBusca/requests/products.dart';
+import 'package:flutter/material.dart';
 
 import 'order.dart';
 
@@ -13,7 +15,26 @@ List<Market> markets = [
     [],
 
     //Orders
-    [],
+    [
+      Order(
+        'Valentina',
+        TimeOfDay(hour: 14, minute: 30),
+        Cart([
+          Bag(products[0], 2),
+          Bag(products[1], 1),
+          Bag(products[4], 2),
+        ]),
+      ),
+      Order(
+        'Adalberto',
+        TimeOfDay(hour: 16, minute: 00),
+        Cart([
+          Bag(products[0], 2),
+          Bag(products[1], 1),
+          Bag(products[4], 2),
+        ]),
+      ),
+    ],
   ),
   Market(
     '001',
