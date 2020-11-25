@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:MeBusca/Products.dart';
 
 class KartPage extends StatefulWidget {
   KartPage({

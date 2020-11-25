@@ -1,4 +1,3 @@
-import 'package:MeBusca/root.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:MeBusca/kart.dart';
