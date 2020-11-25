@@ -127,7 +127,7 @@ class _KartPageState extends State<KartPage> {
                 children: [
                   Expanded(
                     child: RaisedButton(
-                      color: Colors.lightGreen,
+                      color: Colors.red,
                       child: Text('Voltar'),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -137,7 +137,7 @@ class _KartPageState extends State<KartPage> {
                   VerticalDivider(),
                   Expanded(
                       child: RaisedButton(
-                    color: Colors.red,
+                    color: Colors.lightGreen,
                     child: Text('Reservar'),
                     onPressed: () {
                       Future<TimeOfDay> selectedTime = showTimePicker(
