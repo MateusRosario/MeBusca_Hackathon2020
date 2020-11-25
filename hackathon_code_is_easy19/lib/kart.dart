@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_code_is_easy19/Products.dart';
 
 class KartPage extends StatefulWidget {
   KartPage({

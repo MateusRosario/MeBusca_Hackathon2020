@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_code_is_easy19/Markets.dart';
+import 'package:MeBusca/Markets.dart';
 
 class ConsumerHomePage extends StatefulWidget {
   final String title;
@@ -31,6 +31,7 @@ class _ConsumerHomePageState extends State<ConsumerHomePage> {
         ],
       ),
       bottomNavigationBar: Container(
+        height: 40.0,
         child: Row(
           children: <Widget>[
             Container(
