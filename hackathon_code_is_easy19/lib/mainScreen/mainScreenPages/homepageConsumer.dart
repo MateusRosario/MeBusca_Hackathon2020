@@ -193,9 +193,9 @@ class MarketTile extends StatelessWidget {
                       child: Container(),
                     ),
                     Container(
-                        alignment: Alignment.centerLeft,
-                        child:
-                            Text(this.market.distance.toString() + ' metros')),
+                      alignment: Alignment.centerLeft,
+                      child: Text(this.market.distance.toString() + ' metros'),
+                    ),
                   ],
                 ),
               ),

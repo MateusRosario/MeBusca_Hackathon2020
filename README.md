@@ -7,8 +7,8 @@ O Me Busca! nasce das novas necessidades provocadas pela covid-19, ao encarar a 
 
 ### Sobre seu desenvolvimento? :computer:
 
-O Me Busca! foi idealizado durante a Hackathon Pós-Covid em 2020, organizada pela Universidade Federal do Tocantins (UFT) e o
-Instituto Federal do Tocantins (IFTO), por alunos apaixonados por tecnologia e formas de tornar o mundo um lugar mais acessível.
+O Me Busca! foi idealizado durante a **Hackathon Pós-Covid em 2020**, organizada pela Universidade Federal do Tocantins (UFT) e o
+Instituto Federal do Tocantins (IFTO), por alunos apaixonados por tecnologia e formas de tornar o mundo um lugar mais acessível. Este projeto se trata do MVP e foi o projeto **ganhador** do Hackathon.
 
 ### Tecnologia usada :wrench:
 
